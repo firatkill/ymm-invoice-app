@@ -1,0 +1,82 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum DocumentType {
+  FATURA
+  IRSALIYE
+  DEFTER
+}
+
+model User{
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String    @unique
+  password String 
+  createdAt DateTime @default(now())
+
+
+  document Document[]
+}
+
+model Document{
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+
+  uploadCompleted Boolean
+  mukellef Mukellef @relation(fields: [mukellefId], references: [id])
+  mukellefId String @db.ObjectId
+  type String
+  year String
+  description String
+  createdAt          DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+  invoices Invoice[]
+}
+
+
+model Mukellef{
+  id  String  @id @default(auto()) @map("_id") @db.ObjectId
+  mukellef String 
+  vkn String 
+  tckn String
+  adSoyad String
+ 
+  
+  document Document[]
+
+}
+
+// toplam tutar, toplam iskonto, vergi hariç tutar, vergi tutarı, vergi dahil tutar, ödenecek tutar, para birimi
+
+model Invoice {
+  id                 String         @id @default(auto()) @map("_id") @db.ObjectId
+  uuid               String         @unique
+  invoiceNumber      String
+  issueDate          DateTime
+  invoiceTypeCode    String
+  currency           String
+  supplierName       String
+  supplierTaxNumber  String?
+  customerName       String
+  customerTaxNumber  String?
+  createdAt          DateTime       @default(now())
+
+  taxExclusiveAmount         Float
+  payableAmount     Float
+  taxInclusiveAmount         Float
+  discountAmount Float
+  taxTotal  Float
+
+
+
+  documentId        String @db.ObjectId
+  document Document @relation(fields: [documentId], references: [id])
+
+}
+
