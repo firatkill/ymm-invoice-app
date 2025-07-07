@@ -1,13 +1,16 @@
 "use client";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const session = useSession();
+  if (session.status == "authenticated") redirect("/");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

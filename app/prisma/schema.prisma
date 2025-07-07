@@ -76,7 +76,7 @@ model Invoice {
 
 
   documentId        String @db.ObjectId
-  document Document @relation(fields: [documentId], references: [id])
+  document Document @relation(fields: [documentId], references: [id],onDelete:Cascade)
 
 }
 

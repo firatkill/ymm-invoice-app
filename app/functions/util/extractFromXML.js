@@ -1,4 +1,4 @@
-const { parseStringPromise } = require("xml2js");
+import { parseStringPromise } from "xml2js";
 
 function stripNamespaces(obj) {
   if (Array.isArray(obj)) {
