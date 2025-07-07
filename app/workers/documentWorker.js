@@ -2,7 +2,7 @@ import { Worker } from "bullmq";
 import AdmZip from "adm-zip";
 import path from "path";
 import fs from "fs";
-import redis from "../lib/redis/index.js";
+import redis, { connection } from "../lib/redis/index.js";
 import { invoiceQueue } from "../lib/queues/invoiceQueue.js";
 
 const uploadsDir = path.join(process.cwd(), "uploads", "faturalar");
@@ -53,5 +53,5 @@ new Worker(
         console.error("Job'lar işlenirken hata oluştu:", err);
       });
   },
-  { connection: { host: "localhost", port: 6379 } }
+  { connection: connection }
 );

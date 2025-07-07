@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import redis from "../lib/redis/index.js";
+import redis, { connection } from "../lib/redis/index.js";
 import prisma from "../lib/prisma/index.js";
 import fs from "fs";
 import path from "path";
@@ -66,7 +66,7 @@ new Worker(
     }
   },
   {
-    connection: { host: "localhost", port: 6379 },
+    connection: connection,
     attempts: 3,
     backoff: { type: "exponential", delay: 2000 },
   }

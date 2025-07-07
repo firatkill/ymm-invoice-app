@@ -17,5 +17,5 @@ const app = express();
 app.use("/admin/queues", serverAdapter.getRouter());
 
 app.listen(3000, () => {
-  console.log("http://localhost:3000/admin/queues");
+  console.log("http://localhost:3001/admin/queues");
 });
